@@ -1,0 +1,15 @@
+Test-Command: set -e
+ ; for py in $(py3versions -r 2>/dev/null)
+ ; do cd "$AUTOPKGTEST_TMP"
+ ; echo "Testing with $py:"
+ ; $py -m pytest -v --pyargs xarray
+ ; done
+Depends: python3-all,
+         python3-pytest (>= 2.7.1),
+         python3-xarray,
+	 python3-bottleneck,
+         python3-dask (>= 2.8.1+dfsg),
+         python3-netcdf4,
+         python3-scipy,
+         python3-matplotlib
+         

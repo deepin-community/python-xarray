@@ -1,0 +1,21 @@
+Description: Disable warning_is_error that causes FTBFS because of 
+ missing dependencies in ipython
+Author: Alastair McKinstry <mckinstry@debian.org>
+Bug-Origin: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=950101
+Last-Updated: 2020-01-30
+Forwarded: no
+
+Index: python-xarray-0.17.0/doc/conf.py
+===================================================================
+--- python-xarray-0.17.0.orig/doc/conf.py
++++ python-xarray-0.17.0/doc/conf.py
+@@ -29,6 +29,9 @@ allowed_failures = set()
+ print("python exec:", sys.executable)
+ print("sys.path:", sys.path)
+ 
++# See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=950101
++ipython_warning_is_error = False
++
+ if "conda" in sys.executable:
+     print("conda environment:")
+     subprocess.run(["conda", "list"])

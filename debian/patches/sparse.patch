@@ -1,0 +1,7 @@
+Description: Fix for missing SparseArray when sparse in present
+Bug-Origin: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=960380
+Author: Alastair McKinstry <mckinstry@debian.org>
+Last-Updated: 2020-05-12
+Forwarded: no
+
+

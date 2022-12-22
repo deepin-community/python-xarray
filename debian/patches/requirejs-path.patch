@@ -1,0 +1,16 @@
+Description: Use requirejs file supplied by Debian for privacy
+Author: Alastair McKinstry <mckinstry@debian.org>
+Last-Updated: 2021-05-10
+Forwarded: not-needed
+
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -177,6 +177,8 @@
+ 
+ mathjax_path = 'file:///usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+ 
++require_js_url = 'file:////usr/share/javascript/requirejs/require.min.js'
++
+ # Add any paths that contain templates here, relative to this directory.
+ templates_path = ["_templates" ] # , sphinx_autosummary_accessors.templates_path]
+ 

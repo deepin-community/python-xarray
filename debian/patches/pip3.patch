@@ -1,0 +1,16 @@
+Description: Move from pip -> pip3 for the python2 removal.
+Author: Alastair McKinstry <mckinstry@debian.org>
+Last-Updated: 2020-03-11
+Forwarded: no
+
+--- a/xarray/util/print_versions.py
++++ b/xarray/util/print_versions.py
+@@ -121,7 +121,7 @@
+         ("pint", lambda mod: mod.__version__),
+         # xarray setup/test
+         ("setuptools", lambda mod: mod.__version__),
+-        ("pip", lambda mod: mod.__version__),
++        ("pip3", lambda mod: mod.__version__),
+         ("conda", lambda mod: mod.__version__),
+         ("pytest", lambda mod: mod.__version__),
+         # Misc.

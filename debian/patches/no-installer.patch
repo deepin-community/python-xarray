@@ -1,0 +1,67 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ python-xarray (0.15.0-1) UNRELEASED; urgency=medium
+ .
+   * New upstream release
+   * Patches cftime_xfail.patch, 0c73a38_Fix_CRS.patch, xfail-dask.patch
+     no longer needed.
+   * Add patch to disable failures with new ipython. Closes:  #950101
+Author: Alastair McKinstry <mckinstry@debian.org>
+Bug-Debian: https://bugs.debian.org/950101
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2020-02-04
+
+Index: python-xarray-0.17.0/setup.cfg
+===================================================================
+--- python-xarray-0.17.0.orig/setup.cfg
++++ python-xarray-0.17.0/setup.cfg
+@@ -4,6 +4,7 @@ author = xarray Developers
+ author_email = xarray@googlegroups.com
+ license = Apache
+ description = N-D labeled arrays and datasets in Python
++allow_hosts = 
+ long_description_content_type=text/x-rst
+ long_description =
+     **xarray** (formerly **xray**) is an open source project and Python package
+Index: python-xarray-0.17.0/setup.py
+===================================================================
+--- python-xarray-0.17.0.orig/setup.py
++++ python-xarray-0.17.0/setup.py
+@@ -1,4 +1,6 @@
+ #!/usr/bin/env python
+-from setuptools import setup
++from setuptools import setup, find_packages
+ 
+-setup(use_scm_version={"fallback_version": "999"})
++setup(use_scm_version={"fallback_version": "999"},
++      version='0.16.1',
++      packages=find_packages())
+Index: python-xarray-0.17.0/doc/conf.py
+===================================================================
+--- python-xarray-0.17.0.orig/doc/conf.py
++++ python-xarray-0.17.0/doc/conf.py
+@@ -24,6 +24,8 @@ from jinja2.defaults import DEFAULT_FILT
+ 
+ import xarray
+ 
++nbsphinx_allow_errors = True
++
+ allowed_failures = set()
+ 
+ print("python exec:", sys.executable)

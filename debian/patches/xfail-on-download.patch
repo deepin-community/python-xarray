@@ -1,0 +1,30 @@
+Description: downloads are expected to fail on Debian test machines
+Author: Alastair McKinstry <mckinstry@debian.org>
+Forwarded: not-needed
+Last-Updated: 2021-08-25
+
+--- a/xarray/tests/test_tutorial.py
++++ b/xarray/tests/test_tutorial.py
+@@ -11,12 +11,14 @@
+     def setUp(self):
+         self.testfile = "tiny"
+ 
++    @pytest.mark.xfail
+     def test_download_from_github(self, tmp_path):
+         cache_dir = tmp_path / tutorial._default_cache_dir_name
+         ds = tutorial.open_dataset(self.testfile, cache_dir=cache_dir).load()
+         tiny = DataArray(range(5), name="tiny").to_dataset()
+         assert_identical(ds, tiny)
+ 
++    @pytest.mark.xfail
+     def test_download_from_github_load_without_cache(self, tmp_path, monkeypatch):
+         cache_dir = tmp_path / tutorial._default_cache_dir_name
+ 
+@@ -26,6 +28,7 @@
+         ds_cache = tutorial.open_dataset(self.testfile, cache_dir=cache_dir).load()
+         assert_identical(ds_cache, ds_nocache)
+ 
++    @pytest.mark.xfail
+     def test_download_rasterio_from_github_load_without_cache(
+         self, tmp_path, monkeypatch
+     ):

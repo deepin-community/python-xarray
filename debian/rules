@@ -1,0 +1,46 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+export PYBUILD_NAME=xarray
+PY3VERS:= $(shell py3versions -s)
+
+# Disable checking for this release:
+DEB_BUILD_OPTIONS += nocheck
+
+%:
+	dh $@  --buildsystem=pybuild
+
+override_dh_auto_clean:
+	dh_auto_clean
+ifeq (,$(findstring nodoc,$(DEB_BUILD_PROFILES)))
+	$(MAKE) -C doc clean
+endif
+
+override_dh_auto_install: $(PYTHON3:%=install-python%)
+	dh_auto_install
+	find debian/python3-xarray -name '*.idx' -exec chmod -x {} \;
+
+override_dh_auto_build:
+	http_proxy=127.0.0.1:9 https_proxy=127.0.0.1:9 dh_auto_build
+ifeq (,$(findstring nodoc,$(DEB_BUILD_PROFILES)))
+	PYTHONPATH=$(CURDIR) $(MAKE) -C doc html
+endif
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	for p in $(PY3VERS); do \
+		PY3VERNUM=`echo $$p | sed -e 's/python//' `; \
+		pybuild --test --test-pytest -i $$p -p $$PY3VERNUM  ;  \
+		done
+endif
+
+override_dh_sphinxdoc:
+	dh_sphinxdoc --exclude=MathJax.js
+	find debian/python-xarray-doc -name '*.html' \
+	 -exec grep require.js {} /dev/null \; | cut -f1 -d: | while read r; do \
+	sed -e 's%https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4% file:/usr/share/javascript/requirejs%' \
+	< $$r > debian/tmp/x ; \
+	mv debian/tmp/x $$r ; \
+	done

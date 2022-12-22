@@ -1,0 +1,408 @@
+python-xarray (0.19.0-6) unstable; urgency=medium
+
+  * Depend on python3-jinja2. Closes: #993694
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 06 Sep 2021 12:21:39 +0100
+
+python-xarray (0.19.0-5) unstable; urgency=medium
+
+  * Fix patch: test_pad_constant also fails on i386. Closes: #983758
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 01 Sep 2021 10:33:23 +0100
+
+python-xarray (0.19.0-4) unstable; urgency=medium
+
+  * Mark another test xfail because it tries to download data.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 27 Aug 2021 13:45:54 +0100
+
+python-xarray (0.19.0-3) unstable; urgency=medium
+
+  * Move to debhelper level 13
+  * Standards-Version: 4.6.0
+  * Fix typo on patch for pytest marking. test_tutorial.py
+  * Mark test test_pad_constant XFAIL on Arm64 as large constants 
+    not transformed into NaN. Closes: #983758
+  * Mark test_push_dask() XFAIL with bottleneck < 1.3.0.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 25 Aug 2021 20:49:54 +0100
+
+python-xarray (0.19.0-2) unstable; urgency=medium
+
+  * Push to unstable
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 17 Aug 2021 08:54:13 +0100
+
+python-xarray (0.19.0-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 09 Aug 2021 12:57:11 +0100
+
+python-xarray (0.18.2-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 23 May 2021 15:03:08 +0100
+
+python-xarray (0.18.0-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 10 May 2021 14:05:16 +0100
+
+python-xarray (0.17.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sat, 27 Feb 2021 11:22:15 +0000
+
+python-xarray (0.16.2-2) unstable; urgency=medium
+
+  * Drop numba-doc  dependency to enable migration. Closes: #979064
+  * Standards-Version: 4.5.1
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sat, 02 Jan 2021 13:06:33 +0000
+
+python-xarray (0.16.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * Build-depend on python-scipy-doc, python-dask-doc, numba-doc
+  * Update patch to use these packaged docs
+  * d/rules: patch sphinx output to remove require.js privacy breach
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 01 Dec 2020 15:00:35 +0000
+
+python-xarray (0.16.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Patches:
+    - drop merged crs-wkt.patch
+    - no-sphinx-accessors.patch added
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 22 Sep 2020 17:08:46 +0100
+
+python-xarray (0.16.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Thu, 16 Jul 2020 11:00:38 +0100
+
+python-xarray (0.15.1-4) unstable; urgency=medium
+
+  * silence-warnings.patch: Don't fail tests on warnings, only errors.
+    Closes: #963820  
+  * Drop merged/obsolete patches:
+    - 3430.diff
+    - 3431.diff
+    - NaT.patch
+    - xfail-rasterio.patch
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sat, 04 Jul 2020 13:43:18 +0100
+
+python-xarray (0.15.1-3) unstable; urgency=medium
+
+  * patch: Use sparse.COO or scipy.sparse.coo_matrix for sparse
+    matrices, not sparse.SparseArray, which doesn't exist.
+    Closes: #960380.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 12 May 2020 17:04:22 +0100
+
+python-xarray (0.15.1-2) unstable; urgency=medium
+
+  * Drop obsolete sphinx3-build hack which breaks on sphinx 2.4 ;
+    Closes: #959595
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 04 May 2020 12:05:55 +0100
+
+python-xarray (0.15.1-1) unstable; urgency=medium
+
+  * New upstream release 
+  * Use dh-sequence-* rather than --with *
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 27 Mar 2020 10:56:52 +0000
+
+python-xarray (0.15.0-3) unstable; urgency=medium
+
+  * Drop obsolete patches from d/patches
+  * Mark download tests xfail. Closes: #935455
+  * Switch to python3-pip. 
+  * pip3.patch: use pip3 instead of pip. Closes: #943226
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 11 Mar 2020 10:14:52 +0000
+
+python-xarray (0.15.0-2) unstable; urgency=medium
+
+  * Build-Depend on python3-h5netcdf , python3-zarr, python3-pandas,
+    ipython3, python3-jupyter-console, python3-jupyter-core,
+    python3-jupyter-client
+  * Change setup.py to find, include all subpackages. Closes: #950743 
+  * Standards-Version: 4.5.0
+  * Update no-installer patch to set nbsphinx_allow_errors = True
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Thu, 06 Feb 2020 12:54:43 +0000
+
+python-xarray (0.15.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Patches cftime_xfail.patch, 0c73a38_Fix_CRS.patch, xfail-dask.patch
+    no longer needed.
+  * Add patch to disable failures with new ipython. Closes:  #950101
+  * Patch no-installer.patch: Don't try to pip install anything
+  * Depend on python3-nbsphinx, python3-cfgrib, pandoc,python3-numpydoc,
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 04 Feb 2020 14:22:30 +0000
+
+python-xarray (0.14.1-2) unstable; urgency=medium
+
+  * numpy has transitioned to python-numpy-doc for docs needed for build.
+    Use instead odd python-numpydoc
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 06 Dec 2019 11:27:37 +0000
+
+python-xarray (0.14.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 03 Dec 2019 12:08:12 +0000
+
+python-xarray (0.14.0-2) unstable; urgency=medium
+
+  [ Matthias Klose ] 
+  * Fix test failures with new cftime 1.0.4, taken from upstream.
+  * _get_scheduler() exception if dask.multiprocessing missing, taken
+    from upstream.
+
+  [ Alastair McKinstry ]
+  * xfail-dask.patch: Dask version in Debian is < 2.
+    Label some functionality XFAIL, set dask='allowed' rather than
+    'parallelize' where possible for the rest
+  * xfail-rasterio.patch: Disable tests due to issue in rasterio:
+    "WarpedVRT does not permit boundless reads".
+    Closes: #944044
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 17 Nov 2019 18:32:58 +0000
+
+python-xarray (0.14.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.4.1.0
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 16 Oct 2019 10:53:11 +0100
+
+python-xarray (0.13.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 22 Sep 2019 10:31:57 +0100
+
+python-xarray (0.12.3-1) unstable; urgency=medium
+
+  * New upstream release
+  * Move to debhelper-compat (= 12)
+  * Standards-Version: 4.4.0
+  * Disable testing for this release: 1 test fails due to upstream API change
+    in dask
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 21 Jul 2019 15:18:52 +0100
+
+python-xarray (0.12.1-2) unstable; urgency=medium
+
+  * Source-only upload for transition. Closes: #931971
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 14 Jul 2019 14:13:13 +0100
+
+python-xarray (0.12.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop python2 support: code and dependencies (contextlib.suppress, etc) 
+    no longer work on python < 3.5
+  * Add sphinx3-build script to allow python3 -based sphinx build. Helper
+    script in debian/, path set in d/rules; patch to doc/Makefile
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 19 Apr 2019 12:37:11 +0100
+
+python-xarray (0.11.3-2) unstable; urgency=medium
+
+  * Team upload.
+  * Apply fix from upstream for test suite
+    Closes: #922515
+
+ -- Andreas Tille <tille@debian.org>  Wed, 20 Feb 2019 09:21:30 +0100
+
+python-xarray (0.11.3-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 29 Jan 2019 16:25:48 +0000
+
+python-xarray (0.11.2-2) unstable; urgency=medium
+
+  * Build-Depend on flake8
+  * Use sphinx objects from matplotlib-doc. not downloaded
+  * Disable use of 'iris' in building docs, as this triggers downloads
+    at build-time.  Closes: #920194
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 23 Jan 2019 08:48:44 +0000
+
+python-xarray (0.11.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * NaT.patch: NaT==x is now always False, so mark test XFAIL.
+    Closes: #917762
+  * Change description from " ... for Python 2" to " ... for Python"
+  * Standards-Version: 4.3.0
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 07 Jan 2019 16:02:08 +0000
+
+python-xarray (0.11.0-3) unstable; urgency=medium
+
+  * Fix from Jeremy Bicha for FTBFS with python3.7. Closes: #913952
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 20 Nov 2018 05:16:34 +0000
+
+python-xarray (0.11.0-2) unstable; urgency=medium
+
+  * Add dependencies on scipy, matlplotlib to debian/tests/control.
+    Closes: #913847
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 16 Nov 2018 09:19:50 +0000
+
+python-xarray (0.11.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Re-enable testing on python3* rather than python3.6 now pandas supports 
+    python3.7. Closes: #913521
+  * Bug with cftime 1.0.2: mark some affected tests XFAIL. Closes: #913524
+  * Don't ship executable data (example) files
+  * Don't execute tests id 'nocheck' in DEB_BUILD_OPTIONS
+  * Drop deprecated Restrictions: needs-recommends from d/tests/control; 
+    add dependencies instead
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 12 Nov 2018 11:56:23 +0000
+
+python-xarray (0.10.9-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.2.1
+  * Drop hard-coded xz compression
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 03 Oct 2018 15:01:31 +0100
+
+python-xarray (0.10.8-2) unstable; urgency=medium
+
+  * Patch from Graham Inggs for expected ARM64 test failure (mark XFAIL).
+    Closes:#904785.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 31 Jul 2018 13:38:48 +0100
+
+python-xarray (0.10.8-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.1.5
+  * Only run tests for python3.6; tests fail on py3.7 because pandas extensions
+    not yet built for py3.7
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Thu, 26 Jul 2018 13:56:44 +0100
+
+python-xarray (0.10.7-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sat, 09 Jun 2018 14:36:03 +0100
+
+python-xarray (0.10.4-1) unstable; urgency=medium
+
+  * New upstream release
+  * Use 'xz' compression
+  * Require dask >= 0.17.3 to work for
+  * Ship python-xarray. Closes: #896954
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 23 May 2018 11:52:17 +0100
+
+python-xarray (0.10.3-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.1.4
+  * Add Anaconda (BSD-like) copyright license for dask components
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sat, 21 Apr 2018 10:01:29 +0100
+
+python-xarray (0.10.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * Add build-dep on python3-cloudpickle, python3-toolz
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Thu, 15 Mar 2018 11:12:06 +0000
+
+python-xarray (0.9.6-1) unstable; urgency=medium
+
+  * Source future releases from GitHub
+  * Use the recommended gbp configuration
+  * New upstream version 0.9.6 (Closes: #882559)
+  * Rebase the patch queue
+    - Drop Fix-missing-config-errors-when-running-test-suite.patch,
+      no longer required
+    - Refresh Use-packaged-docs.patch, Use-packaged-MathJax.patch
+      and No-privacy-breach.patch
+  * Bump the copyright years
+  * Update the dependencies
+    - Drop distributed, h5netcdf, h5py, pydap and toolz from Build-Depends
+    - Add rasterio and sphinx-gallery to Build-Depends
+    - Move bottleneck, dask and netcdf4 from Suggests to Recommends
+    - Add cartopy and rasterio to Suggests
+    - Drop distributed, h5netcdf and h5py from Suggests
+  * Fix autopkgtest failures.
+    Thanks to Steve Langasek (Closes: #873366)
+  * Drop superfluous nocheck guards
+  * Ignore the autogenerated version file
+  * Fix whitespacing in rules file
+  * Bump the debhelper version to 11
+  * Bump the standards version to 4.1.3
+  * Point the VCS metadata to salsa.d.o
+  * Disable Sphinx gallery generation
+    - New patch No-sphinx-gallery.patch
+  * Cherry-pick upstream fix for a failing test
+    - New patch Fix-test-suite-failure.patch
+    Thanks to Rebecca N. Plamer (Closes: #871208)
+
+ -- Ghislain Antony Vaillant <ghisvail@gmail.com>  Sat, 03 Feb 2018 13:49:07 +0000
+
+python-xarray (0.9.2-1) unstable; urgency=medium
+
+  * New upstream version 0.9.2
+  * Drop repacking of upstream tarballs, no longer required
+  * Cherry-pick upstream fix for test config errors
+    - New patch Fix-missing-config-errors-when-running-test-suite.patch
+  * Add optional dependencies to the build
+    - Added bottleneck, dask, distributed, h5netcdf, h5py, matplotlib,
+      netcdf4, pydap, scipy, seaborn, toolz to the list of b-deps and
+      suggested i-deps
+    - Test without distributed and pydap since they are known to fail
+      upstream
+  * Run DEP-8 tests with all optional dependencies
+  * Increase verbosity of DEP-8 tests
+  * Discard egg-info dir using extend-diff-ignore
+  * Add the documentation package
+    - Add cartopy, ipython, numpydoc, sphinx, sphinx-rtd-theme to the list
+      of b-deps
+    - Mark the dask, matplotlib, netcdf4, numpy, pandas, scipy, seaborn
+      b-deps as !nodoc
+    - Do not build the documentation if the nodoc b-prof is requested
+  * Use the packaged documentation
+    - Add numpy-doc, pandas-doc, python3-doc to the list of b-deps
+    - Patch the intersphinx configuration to use the packaged docs (new
+      patch Use-packaged-docs.patch)
+  * Use the packaged MathJax
+    - Add MathJax to the i-deps of the documentation package
+    - Patch the docs configuration to use the packaged MathJax
+  * Remove privacy breaching content from the docs
+    - New patch No-privacy-breach.patch
+
+ -- Ghislain Antony Vaillant <ghisvail@gmail.com>  Sat, 15 Apr 2017 21:28:16 +0100
+
+python-xarray (0.9.1+ds1-1) unstable; urgency=low
+
+  * Initial release. (Closes: #851444)
+
+ -- Ghislain Antony Vaillant <ghisvail@gmail.com>  Thu, 23 Feb 2017 14:14:08 +0000
