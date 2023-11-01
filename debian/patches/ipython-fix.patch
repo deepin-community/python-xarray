@@ -5,17 +5,15 @@ Bug-Origin: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=950101
 Last-Updated: 2020-01-30
 Forwarded: no
 
-Index: python-xarray-0.17.0/doc/conf.py
-===================================================================
---- python-xarray-0.17.0.orig/doc/conf.py
-+++ python-xarray-0.17.0/doc/conf.py
-@@ -29,6 +29,9 @@ allowed_failures = set()
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -35,6 +35,9 @@
  print("python exec:", sys.executable)
  print("sys.path:", sys.path)
  
 +# See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=950101
 +ipython_warning_is_error = False
 +
- if "conda" in sys.executable:
+ if "CONDA_DEFAULT_ENV" in os.environ or "conda" in sys.executable:
      print("conda environment:")
-     subprocess.run(["conda", "list"])
+     subprocess.run([os.environ.get("CONDA_EXE", "conda"), "list"])

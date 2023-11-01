@@ -8,29 +8,27 @@ Forwarded: not-needed
  doc/conf.py | 16 ++++++++++++----
  1 file changed, 12 insertions(+), 4 deletions(-)
 
-Index: python-xarray-0.18.0/doc/conf.py
-===================================================================
---- python-xarray-0.18.0.orig/doc/conf.py
-+++ python-xarray-0.18.0/doc/conf.py
-@@ -309,14 +309,14 @@ htmlhelp_basename = "xarraydoc"
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -313,14 +313,14 @@
  
  # Example configuration for intersphinx: refer to the Python standard library.
  intersphinx_mapping = {
 -    "python": ("https://docs.python.org/3/", None),
 -    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-+    "python": ("https://docs.python.org/3/", '/usr/share/doc/python3/html/objects.inv'),
++    "python": ("https://docs.python.org/3/", "/usr/share/doc/python3/html/objects.inv"),
 +    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", '/usr/share/doc/python-pandas-doc/html/objects.inv'),
      "iris": ("https://scitools-iris.readthedocs.io/en/latest", None),
 -    "numpy": ("https://numpy.org/doc/stable", None),
--    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
--    "numba": ("https://numba.pydata.org/numba-doc/latest", None),
+-    "scipy": ("https://docs.scipy.org/doc/scipy", None),
+-    "numba": ("https://numba.readthedocs.io/en/stable/", None),
 -    "matplotlib": ("https://matplotlib.org/stable/", None),
 -    "dask": ("https://docs.dask.org/en/latest", None),
 +    "numpy": ("https://numpy.org/doc/stable", '/usr/share/doc/numba-doc/html/objects.inv'),
-+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
++    "scipy": ("https://docs.scipy.org/doc/scipy", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
 +    "numba": ("https://numba.pydata.org/numba-doc/latest", '/usr/share/doc/numba-doc/html/objects.inv'),
-+    "matplotlib": ("https://matplotlib.org/stable/", '/usr/share/doc/python-matplotlib-doc/html/objects.inv'),
++    "matplotlib": ("https://matplotlib.org/stable/",  None),
 +    "dask": ("https://docs.dask.org/en/latest", '/usr/share/doc/python-dask-doc/html/objects.inv'),
      "cftime": ("https://unidata.github.io/cftime", None),
-     "rasterio": ("https://rasterio.readthedocs.io/en/latest", None),
      "sparse": ("https://sparse.pydata.org/en/latest/", None),
+     "cubed": ("https://tom-e-white.com/cubed/", None),

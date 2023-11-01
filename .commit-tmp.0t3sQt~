@@ -1,0 +1,4 @@
+Update  no-installer.patch to avoid accidentally claiming we're
+
+* Update  no-installer.patch to avoid accidentally claiming we're
+* Temporarily drop zarr support as it segfaults tests

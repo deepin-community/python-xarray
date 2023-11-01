@@ -3,15 +3,13 @@ Description: Disable iris in doc building, as it will trigger downloads
 Last-Updated: 2020-12-01
 Forwarded: not-needed
 
-Index: python-xarray-0.17.0/doc/conf.py
-===================================================================
---- python-xarray-0.17.0.orig/doc/conf.py
-+++ python-xarray-0.17.0/doc/conf.py
-@@ -413,7 +413,6 @@ htmlhelp_basename = "xarraydoc"
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -317,7 +317,6 @@
  intersphinx_mapping = {
-     "python": ("https://docs.python.org/3/", '/usr/share/doc/python3/html/objects.inv'),
+     "python": ("https://docs.python.org/3/", "/usr/share/doc/python3/html/objects.inv"),
      "pandas": ("https://pandas.pydata.org/pandas-docs/stable", '/usr/share/doc/python-pandas-doc/html/objects.inv'),
 -    "iris": ("https://scitools-iris.readthedocs.io/en/latest", None),
      "numpy": ("https://numpy.org/doc/stable", '/usr/share/doc/numba-doc/html/objects.inv'),
-     "scipy": ("https://docs.scipy.org/doc/scipy/reference", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
+     "scipy": ("https://docs.scipy.org/doc/scipy", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
      "numba": ("https://numba.pydata.org/numba-doc/latest", '/usr/share/doc/numba-doc/html/objects.inv'),

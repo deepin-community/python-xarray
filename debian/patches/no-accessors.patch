@@ -5,15 +5,15 @@ Forwarded: not-needed
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -19,7 +19,7 @@
- import sys
+@@ -21,7 +21,7 @@
  from contextlib import suppress
+ from textwrap import dedent, indent
  
 -import sphinx_autosummary_accessors
 +# import sphinx_autosummary_accessors
- 
- import xarray
- 
+ import yaml
+ from sphinx.application import Sphinx
+ from sphinx.util import logging
 @@ -75,7 +75,7 @@
  # ones.
  extensions = [
@@ -30,9 +30,9 @@ Forwarded: not-needed
 -    "sphinx_autosummary_accessors",
 +#    "sphinx_autosummary_accessors",
      "sphinx.ext.linkcode",
-     "sphinx_panels",
      "sphinxext.opengraph",
-@@ -178,7 +178,7 @@
+     "sphinx_copybutton",
+@@ -183,7 +183,7 @@
  mathjax_path = 'file:///usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
  
  # Add any paths that contain templates here, relative to this directory.
