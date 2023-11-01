@@ -1,0 +1,11 @@
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -88,7 +88,7 @@
+ #    "sphinxext.opengraph",
+ #    "sphinx_copybutton",
+ #   "sphinxext.rediraffe",
+-    "sphinx_design",
++#    "sphinx_design",
+     "sphinx_inline_tabs",
+ ]
+ 

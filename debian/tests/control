@@ -11,5 +11,8 @@ Depends: python3-all,
          python3-dask (>= 2.8.1+dfsg),
          python3-netcdf4,
          python3-scipy,
-         python3-matplotlib
+         python3-matplotlib,
+	 python3-cftime,
+         python3-rasterio
+
          

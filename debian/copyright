@@ -253,10 +253,7 @@ License: Python-2.0
  OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 Files: xarray/tests/test_dask.py
- xarray/core/dask_array_compat.py
  xarray/core/dask_array_ops.py
- ci/requirements-py36-dask-dev.yml
- doc/dask.rst
  doc/_static/dask_array.png
 Copyright:  2014-2018, Anaconda, Inc. and contributors
 License: ANACONDA-BSD

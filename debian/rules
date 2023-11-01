@@ -7,15 +7,21 @@ export PYBUILD_NAME=xarray
 PY3VERS:= $(shell py3versions -s)
 
 # Disable checking for this release:
-DEB_BUILD_OPTIONS += nocheck
+DEB_BUILD_OPTIONS += nocheck 
+
+export PYDEVD_DISABLE_FILE_VALIDATION=1
+export XDG_CACHE_HOME=$(CURDIR)/cache
+
+# Needed for pooch temp data directory
+export env=/tmp/pooch
 
 %:
 	dh $@  --buildsystem=pybuild
 
 override_dh_auto_clean:
 	dh_auto_clean
-ifeq (,$(findstring nodoc,$(DEB_BUILD_PROFILES)))
-	$(MAKE) -C doc clean
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+	# $(MAKE) -C doc clean
 endif
 
 override_dh_auto_install: $(PYTHON3:%=install-python%)
@@ -24,9 +30,6 @@ override_dh_auto_install: $(PYTHON3:%=install-python%)
 
 override_dh_auto_build:
 	http_proxy=127.0.0.1:9 https_proxy=127.0.0.1:9 dh_auto_build
-ifeq (,$(findstring nodoc,$(DEB_BUILD_PROFILES)))
-	PYTHONPATH=$(CURDIR) $(MAKE) -C doc html
-endif
 
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
@@ -36,6 +39,7 @@ ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 		done
 endif
 
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
 override_dh_sphinxdoc:
 	dh_sphinxdoc --exclude=MathJax.js
 	find debian/python-xarray-doc -name '*.html' \
@@ -44,3 +48,4 @@ override_dh_sphinxdoc:
 	< $$r > debian/tmp/x ; \
 	mv debian/tmp/x $$r ; \
 	done
+endif

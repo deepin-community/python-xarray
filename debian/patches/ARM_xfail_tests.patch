@@ -6,19 +6,9 @@ Bug-Debian: http://bugs.debian.org/904785
 Forwarded: no
 Last-Update: 2018-07-29
 
---- a/xarray/tests/test_backends.py
-+++ b/xarray/tests/test_backends.py
-@@ -3276,6 +3276,7 @@
-     def test_roundtrip_coordinates_with_space(self):
-         pass
- 
-+    @arm_xfail
-     def test_roundtrip_numpy_datetime_data(self):
-         # Override method in DatasetIOBase - remove not applicable
-         # save_kwargs
 --- a/xarray/tests/__init__.py
 +++ b/xarray/tests/__init__.py
-@@ -39,6 +39,9 @@
+@@ -45,6 +45,9 @@
      reason="expected failure on ARM",
  )
  
@@ -26,5 +16,5 @@ Last-Update: 2018-07-29
 +arm_xfail = pytest.mark.xfail(platform.machine() == 'aarch64' or
 +    'arm' in platform.machine(), reason='expected failure on ARM')
  
- def _importorskip(modname, minversion=None):
-     try:
+ def _importorskip(
+     modname: str, minversion: str | None = None

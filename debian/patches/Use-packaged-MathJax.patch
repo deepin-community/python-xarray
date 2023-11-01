@@ -6,11 +6,9 @@ Subject: Use packaged MathJax
  doc/conf.py | 2 ++
  1 file changed, 2 insertions(+)
 
-Index: python-xarray-0.18.0/doc/conf.py
-===================================================================
---- python-xarray-0.18.0.orig/doc/conf.py
-+++ python-xarray-0.18.0/doc/conf.py
-@@ -170,6 +170,8 @@ napoleon_type_aliases = {
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -175,6 +175,8 @@
  }
  
  

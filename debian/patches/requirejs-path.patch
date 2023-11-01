@@ -5,7 +5,7 @@ Forwarded: not-needed
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -177,6 +177,8 @@
+@@ -183,6 +183,8 @@
  
  mathjax_path = 'file:///usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
  

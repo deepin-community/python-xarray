@@ -1,16 +1,14 @@
-silence-warnings.patch
 Use-packaged-docs.patch
 Use-packaged-MathJax.patch
 ARM_xfail_tests.patch
-bottlneck-xfail.patch
 disable-iris.patch
 ipython-fix.patch
 no-installer.patch
 xfail-on-download.patch
 pip3.patch
-# sparse.patch
 no-accessors.patch
 requirejs-path.patch
-no-sphinx-panels.patch
 no-sphinxext.patch
 xfail-pad-constant.patch
+no-sphinx-design.patch
+# xfail-on-random-patch --disabled, upstream bug closed
