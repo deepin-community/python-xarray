@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import sys
 from collections.abc import Hashable, Iterable, Mapping, Sequence
+from enum import Enum
 from types import ModuleType
 from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
+    Final,
+    Literal,
     Protocol,
     SupportsIndex,
     TypeVar,
@@ -16,15 +20,30 @@ from typing import (
 
 import numpy as np
 
-if TYPE_CHECKING:
-    from numpy.typing import NDArray
+try:
+    if sys.version_info >= (3, 11):
+        from typing import TypeAlias
+    else:
+        from typing_extensions import TypeAlias
+except ImportError:
+    if TYPE_CHECKING:
+        raise
+    else:
+        Self: Any = None
 
+
+# Singleton type, as per https://github.com/python/typing/pull/240
+class Default(Enum):
+    token: Final = 0
+
+
+_default = Default.token
 
 # https://stackoverflow.com/questions/74633074/how-to-type-hint-a-generic-numpy-array
 _T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
 
-
+_dtype = np.dtype
 _DType = TypeVar("_DType", bound=np.dtype[Any])
 _DType_co = TypeVar("_DType_co", covariant=True, bound=np.dtype[Any])
 # A subset of `npt.DTypeLike` that can be parametrized w.r.t. `np.generic`
@@ -37,8 +56,7 @@ _ScalarType_co = TypeVar("_ScalarType_co", bound=np.generic, covariant=True)
 @runtime_checkable
 class _SupportsDType(Protocol[_DType_co]):
     @property
-    def dtype(self) -> _DType_co:
-        ...
+    def dtype(self) -> _DType_co: ...
 
 
 _DTypeLike = Union[
@@ -54,27 +72,41 @@ _ShapeLike = Union[SupportsIndex, Sequence[SupportsIndex]]
 _ShapeType = TypeVar("_ShapeType", bound=Any)
 _ShapeType_co = TypeVar("_ShapeType_co", bound=Any, covariant=True)
 
+_Axis = int
+_Axes = tuple[_Axis, ...]
+_AxisLike = Union[_Axis, _Axes]
+
 _Chunks = tuple[_Shape, ...]
+_NormalizedChunks = tuple[tuple[int, ...], ...]
+# FYI in some cases we don't allow `None`, which this doesn't take account of.
+T_ChunkDim: TypeAlias = Union[int, Literal["auto"], None, tuple[int, ...]]
+# We allow the tuple form of this (though arguably we could transition to named dims only)
+T_Chunks: TypeAlias = Union[T_ChunkDim, Mapping[Any, T_ChunkDim]]
 
 _Dim = Hashable
 _Dims = tuple[_Dim, ...]
 
 _DimsLike = Union[str, Iterable[_Dim]]
-_AttrsLike = Union[Mapping[Any, Any], None]
 
-_dtype = np.dtype
+# https://data-apis.org/array-api/latest/API_specification/indexing.html
+# TODO: np.array_api was bugged and didn't allow (None,), but should!
+# https://github.com/numpy/numpy/pull/25022
+# https://github.com/data-apis/array-api/pull/674
+_IndexKey = Union[int, slice, "ellipsis"]
+_IndexKeys = tuple[Union[_IndexKey], ...]  #  tuple[Union[_IndexKey, None], ...]
+_IndexKeyLike = Union[_IndexKey, _IndexKeys]
+
+_AttrsLike = Union[Mapping[Any, Any], None]
 
 
 class _SupportsReal(Protocol[_T_co]):
     @property
-    def real(self) -> _T_co:
-        ...
+    def real(self) -> _T_co: ...
 
 
 class _SupportsImag(Protocol[_T_co]):
     @property
-    def imag(self) -> _T_co:
-        ...
+    def imag(self) -> _T_co: ...
 
 
 @runtime_checkable
@@ -86,24 +118,10 @@ class _array(Protocol[_ShapeType_co, _DType_co]):
     """
 
     @property
-    def shape(self) -> _Shape:
-        ...
+    def shape(self) -> _Shape: ...
 
     @property
-    def dtype(self) -> _DType_co:
-        ...
-
-    @overload
-    def __array__(self, dtype: None = ..., /) -> np.ndarray[Any, _DType_co]:
-        ...
-
-    @overload
-    def __array__(self, dtype: _DType, /) -> np.ndarray[Any, _DType]:
-        ...
-
-
-# Corresponds to np.typing.NDArray:
-_Array = _array[Any, np.dtype[_ScalarType_co]]
+    def dtype(self) -> _DType_co: ...
 
 
 @runtime_checkable
@@ -116,6 +134,34 @@ class _arrayfunction(
     Corresponds to np.ndarray.
     """
 
+    @overload
+    def __getitem__(
+        self, key: _arrayfunction[Any, Any] | tuple[_arrayfunction[Any, Any], ...], /
+    ) -> _arrayfunction[Any, _DType_co]: ...
+
+    @overload
+    def __getitem__(self, key: _IndexKeyLike, /) -> Any: ...
+
+    def __getitem__(
+        self,
+        key: (
+            _IndexKeyLike
+            | _arrayfunction[Any, Any]
+            | tuple[_arrayfunction[Any, Any], ...]
+        ),
+        /,
+    ) -> _arrayfunction[Any, _DType_co] | Any: ...
+
+    @overload
+    def __array__(self, dtype: None = ..., /) -> np.ndarray[Any, _DType_co]: ...
+
+    @overload
+    def __array__(self, dtype: _DType, /) -> np.ndarray[Any, _DType]: ...
+
+    def __array__(
+        self, dtype: _DType | None = ..., /
+    ) -> np.ndarray[Any, _DType] | np.ndarray[Any, _DType_co]: ...
+
     # TODO: Should return the same subclass but with a new dtype generic.
     # https://github.com/python/typing/issues/548
     def __array_ufunc__(
@@ -124,8 +170,7 @@ class _arrayfunction(
         method: Any,
         *inputs: Any,
         **kwargs: Any,
-    ) -> Any:
-        ...
+    ) -> Any: ...
 
     # TODO: Should return the same subclass but with a new dtype generic.
     # https://github.com/python/typing/issues/548
@@ -135,12 +180,13 @@ class _arrayfunction(
         types: Iterable[type],
         args: Iterable[Any],
         kwargs: Mapping[str, Any],
-    ) -> Any:
-        ...
+    ) -> Any: ...
 
+    @property
+    def imag(self) -> _arrayfunction[_ShapeType_co, Any]: ...
 
-# Corresponds to np.typing.NDArray:
-_ArrayFunction = _arrayfunction[Any, np.dtype[_ScalarType_co]]
+    @property
+    def real(self) -> _arrayfunction[_ShapeType_co, Any]: ...
 
 
 @runtime_checkable
@@ -151,24 +197,26 @@ class _arrayapi(_array[_ShapeType_co, _DType_co], Protocol[_ShapeType_co, _DType
     Corresponds to np.ndarray.
     """
 
-    def __array_namespace__(self) -> ModuleType:
-        ...
+    def __getitem__(
+        self,
+        key: (
+            _IndexKeyLike | Any
+        ),  # TODO: Any should be _arrayapi[Any, _dtype[np.integer]]
+        /,
+    ) -> _arrayapi[Any, Any]: ...
 
+    def __array_namespace__(self) -> ModuleType: ...
 
-# Corresponds to np.typing.NDArray:
-_ArrayAPI = _arrayapi[Any, np.dtype[_ScalarType_co]]
 
 # NamedArray can most likely use both __array_function__ and __array_namespace__:
 _arrayfunction_or_api = (_arrayfunction, _arrayapi)
-# _ArrayFunctionOrAPI = Union[
-#     _arrayfunction[_ShapeType_co, _DType_co], _arrayapi[_ShapeType_co, _DType_co]
-# ]
 
 duckarray = Union[
     _arrayfunction[_ShapeType_co, _DType_co], _arrayapi[_ShapeType_co, _DType_co]
 ]
+
+# Corresponds to np.typing.NDArray:
 DuckArray = _arrayfunction[Any, np.dtype[_ScalarType_co]]
-T_DuckArray = TypeVar("T_DuckArray", bound=_arrayfunction[Any, Any])
 
 
 @runtime_checkable
@@ -182,12 +230,7 @@ class _chunkedarray(
     """
 
     @property
-    def chunks(self) -> _Chunks:
-        ...
-
-
-# Corresponds to np.typing.NDArray:
-_ChunkedArray = _chunkedarray[Any, np.dtype[_ScalarType_co]]
+    def chunks(self) -> _Chunks: ...
 
 
 @runtime_checkable
@@ -201,12 +244,7 @@ class _chunkedarrayfunction(
     """
 
     @property
-    def chunks(self) -> _Chunks:
-        ...
-
-
-# Corresponds to np.typing.NDArray:
-_ChunkedArrayFunction = _chunkedarrayfunction[Any, np.dtype[_ScalarType_co]]
+    def chunks(self) -> _Chunks: ...
 
 
 @runtime_checkable
@@ -220,12 +258,15 @@ class _chunkedarrayapi(
     """
 
     @property
-    def chunks(self) -> _Chunks:
-        ...
+    def chunks(self) -> _Chunks: ...
 
 
-# Corresponds to np.typing.NDArray:
-_ChunkedArrayAPI = _chunkedarrayapi[Any, np.dtype[_ScalarType_co]]
+# NamedArray can most likely use both __array_function__ and __array_namespace__:
+_chunkedarrayfunction_or_api = (_chunkedarrayfunction, _chunkedarrayapi)
+chunkedduckarray = Union[
+    _chunkedarrayfunction[_ShapeType_co, _DType_co],
+    _chunkedarrayapi[_ShapeType_co, _DType_co],
+]
 
 
 @runtime_checkable
@@ -238,12 +279,7 @@ class _sparsearray(
     Corresponds to np.ndarray.
     """
 
-    def todense(self) -> NDArray[_ScalarType_co]:
-        ...
-
-
-# Corresponds to np.typing.NDArray:
-_SparseArray = _sparsearray[Any, np.dtype[_ScalarType_co]]
+    def todense(self) -> np.ndarray[Any, _DType_co]: ...
 
 
 @runtime_checkable
@@ -256,12 +292,7 @@ class _sparsearrayfunction(
     Corresponds to np.ndarray.
     """
 
-    def todense(self) -> NDArray[_ScalarType_co]:
-        ...
-
-
-# Corresponds to np.typing.NDArray:
-_SparseArrayFunction = _sparsearrayfunction[Any, np.dtype[_ScalarType_co]]
+    def todense(self) -> np.ndarray[Any, _DType_co]: ...
 
 
 @runtime_checkable
@@ -274,26 +305,15 @@ class _sparsearrayapi(
     Corresponds to np.ndarray.
     """
 
-    def todense(self) -> NDArray[_ScalarType_co]:
-        ...
+    def todense(self) -> np.ndarray[Any, _DType_co]: ...
 
-
-# Corresponds to np.typing.NDArray:
-_SparseArrayAPI = _sparsearrayapi[Any, np.dtype[_ScalarType_co]]
 
 # NamedArray can most likely use both __array_function__ and __array_namespace__:
 _sparsearrayfunction_or_api = (_sparsearrayfunction, _sparsearrayapi)
-_SparseArrayFunctionOrAPI = Union[
-    _SparseArrayFunction[np.generic], _SparseArrayAPI[np.generic]
+sparseduckarray = Union[
+    _sparsearrayfunction[_ShapeType_co, _DType_co],
+    _sparsearrayapi[_ShapeType_co, _DType_co],
 ]
 
-
-# Temporary placeholder for indicating an array api compliant type.
-# hopefully in the future we can narrow this down more
-# T_DuckArray = TypeVar("T_DuckArray", bound=_ArrayFunctionOrAPI)
-
-# The chunked arrays like dask or cubed:
-_ChunkedArrayFunctionOrAPI = Union[
-    _ChunkedArrayFunction[np.generic], _ChunkedArrayAPI[np.generic]
-]
-T_ChunkedArray = TypeVar("T_ChunkedArray", bound=_ChunkedArrayFunctionOrAPI)
+ErrorOptions = Literal["raise", "ignore"]
+ErrorOptionsWithWarn = Literal["raise", "warn", "ignore"]

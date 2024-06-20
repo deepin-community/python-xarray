@@ -1,7 +1,8 @@
+Description: Use docs shipped with Debian rather than online versions
 From: Ghislain Antony Vaillant <ghisvail@gmail.com>
 Date: Sat, 15 Apr 2017 15:33:41 +0100
 Subject: Use packaged docs
-Last-Updated: 2020-12-01
+Last-Updated: 2024-01-28
 Forwarded: not-needed
 
 ---
@@ -10,25 +11,29 @@ Forwarded: not-needed
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -313,14 +313,14 @@
- 
- # Example configuration for intersphinx: refer to the Python standard library.
+@@ -318,17 +318,18 @@
  intersphinx_mapping = {
--    "python": ("https://docs.python.org/3/", None),
--    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-+    "python": ("https://docs.python.org/3/", "/usr/share/doc/python3/html/objects.inv"),
-+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", '/usr/share/doc/python-pandas-doc/html/objects.inv'),
-     "iris": ("https://scitools-iris.readthedocs.io/en/latest", None),
--    "numpy": ("https://numpy.org/doc/stable", None),
--    "scipy": ("https://docs.scipy.org/doc/scipy", None),
--    "numba": ("https://numba.readthedocs.io/en/stable/", None),
--    "matplotlib": ("https://matplotlib.org/stable/", None),
+     "cftime": ("https://unidata.github.io/cftime", None),
+     "cubed": ("https://cubed-dev.github.io/cubed/", None),
 -    "dask": ("https://docs.dask.org/en/latest", None),
+     "datatree": ("https://xarray-datatree.readthedocs.io/en/latest/", None),
+     "flox": ("https://flox.readthedocs.io/en/latest/", None),
+-    "hypothesis": ("https://hypothesis.readthedocs.io/en/latest/", None),
++    "hypothesis": ("https://hypothesis.readthedocs.io/en/latest/", "/usr/share/doc/python-hypothesis-doc/html/objects.inv"),
+     "iris": ("https://scitools-iris.readthedocs.io/en/latest", None),
+-    "matplotlib": ("https://matplotlib.org/stable/", None),
+     "numba": ("https://numba.readthedocs.io/en/stable/", None),
+-    "numpy": ("https://numpy.org/doc/stable", None),
+-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+-    "python": ("https://docs.python.org/3/", None),
+-    "scipy": ("https://docs.scipy.org/doc/scipy", None),
++    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", '/usr/share/doc/python-pandas-doc/html/objects.inv'),    
++    "python": ("https://docs.python.org/3/", "/usr/share/doc/python3/html/objects.inv"),
 +    "numpy": ("https://numpy.org/doc/stable", '/usr/share/doc/numba-doc/html/objects.inv'),
 +    "scipy": ("https://docs.scipy.org/doc/scipy", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
 +    "numba": ("https://numba.pydata.org/numba-doc/latest", '/usr/share/doc/numba-doc/html/objects.inv'),
 +    "matplotlib": ("https://matplotlib.org/stable/",  None),
 +    "dask": ("https://docs.dask.org/en/latest", '/usr/share/doc/python-dask-doc/html/objects.inv'),
-     "cftime": ("https://unidata.github.io/cftime", None),
      "sparse": ("https://sparse.pydata.org/en/latest/", None),
-     "cubed": ("https://tom-e-white.com/cubed/", None),
+     "xarray-tutorial": ("https://tutorial.xarray.dev/", None),
+     "zarr": ("https://zarr.readthedocs.io/en/latest/", None),

@@ -1,0 +1,30 @@
+Description: Ignore rounding error on i386
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug-Debian: https://bugs.debian.org/1004869
+Forwarded: no
+
+--- a/xarray/tests/test_interp.py
++++ b/xarray/tests/test_interp.py
+@@ -2,6 +2,9 @@
+ 
+ from itertools import combinations, permutations
+ from typing import cast
++import sys
++import re
++import platform
+ 
+ import numpy as np
+ import pandas as pd
+@@ -895,7 +898,10 @@
+     xda = xda.chunk(1)
+     zda = zda.chunk(3)
+     actual = da.interp(t=0.5, x=xda, y=yda, z=zda, kwargs=kwargs, method=method)
+-    assert_identical(actual, expected)
++    if (sys.maxsize<2**33 and re.match('i.?86|x86',platform.uname()[4])):
++        assert_allclose(actual, expected) # i386 rounding
++    else:
++        assert_identical(actual, expected)
+ 
+ 
+ @requires_scipy

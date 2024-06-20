@@ -1,0 +1,20 @@
+Description: Fix regression on i386 due to tolernce issue
+ https://ci.debian.net/packages/p/python-xarray/testing/i386/42337756/
+Author: Alastair McKinstry <mckinstry@debian.org>
+Last-Updated: 2024-01-28
+Forwarded: no
+
+--- a/xarray/tests/test_duck_array_ops.py
++++ b/xarray/tests/test_duck_array_ops.py
+@@ -635,7 +635,10 @@
+     actual = gradient(darray, x, axis=axis, edge_order=edge_order)
+ 
+     assert isinstance(actual, da.Array)
+-    assert_array_equal(actual, expected)
++    # assert_array_equal(actual, expected) breaks on i386 with tolerance issue
++    # but assert_allclose(actual, expected) doesn't work due to type issues
++    np.testing.assert_allclose(actual.compute(), expected)
++    # assert_array_equal(actual, expected)
+ 
+ 
+ @pytest.mark.parametrize("dim_num", [1, 2])

@@ -1,0 +1,56 @@
+Description: Use the system endianness in test references
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug-Debian: https://bugs.debian.org/1053700
+Forwarded: no
+
+--- a/xarray/tests/test_coding_times.py
++++ b/xarray/tests/test_coding_times.py
+@@ -3,6 +3,7 @@
+ import warnings
+ from datetime import timedelta
+ from itertools import product
++import sys
+ 
+ import numpy as np
+ import pandas as pd
+@@ -1236,7 +1237,7 @@
+         encoding = {}
+ 
+     var = Variable(["time"], times, encoding=encoding)
+-    assert var.dtype == np.dtype("<M8[ns]")
++    assert var.dtype == np.dtype(">M8[ns]" if sys.byteorder=='big' else "<M8[ns]")
+ 
+     encoded_var = conventions.encode_cf_variable(var)
+     assert (
+@@ -1247,7 +1248,7 @@
+     assert encoded_var.data.dtype == dtype
+ 
+     decoded_var = conventions.decode_cf_variable("foo", encoded_var)
+-    assert decoded_var.dtype == np.dtype("<M8[ns]")
++    assert decoded_var.dtype == np.dtype(">M8[ns]" if sys.byteorder=='big' else "<M8[ns]")
+     assert (
+         decoded_var.encoding["units"]
+         == f"{_numpy_to_netcdf_timeunit(timeunit)} since 1970-01-01 00:00:00"
+--- a/xarray/tests/test_backends.py
++++ b/xarray/tests/test_backends.py
+@@ -872,7 +872,7 @@
+                 if actual["a"].dtype.metadata is not None:
+                     assert check_vlen_dtype(actual["a"].dtype) == str
+             else:
+-                assert actual["a"].dtype == np.dtype("<U1")
++                assert actual["a"].dtype == np.dtype(">U1" if sys.byteorder=='big' else "<U1")
+ 
+     @pytest.mark.parametrize(
+         "decoded_fn, encoded_fn",
+@@ -1401,8 +1401,8 @@
+         expected = Dataset({"x": expected_string})
+         kwargs = dict(encoding={"x": {"dtype": str}})
+         with self.roundtrip(original, save_kwargs=kwargs) as actual:
+-            assert actual["x"].encoding["dtype"] == "<U3"
+-            assert actual["x"].dtype == "<U3"
++            assert actual["x"].encoding["dtype"] == (">U3" if sys.byteorder=='big' else "<U3")
++            assert actual["x"].dtype == (">U3" if sys.byteorder=='big' else "<U3")
+             assert_identical(actual, expected)
+ 
+     @pytest.mark.parametrize("fill_value", ["XXX", "", "bár"])
