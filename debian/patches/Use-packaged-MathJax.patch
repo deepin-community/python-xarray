@@ -8,7 +8,7 @@ Subject: Use packaged MathJax
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -175,6 +175,8 @@
+@@ -176,6 +176,8 @@
  }
  
  

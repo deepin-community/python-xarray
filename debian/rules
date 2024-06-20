@@ -6,37 +6,46 @@ export DH_VERBOSE=1
 export PYBUILD_NAME=xarray
 PY3VERS:= $(shell py3versions -s)
 
-# Disable checking for this release:
-DEB_BUILD_OPTIONS += nocheck 
+# Disable  for this release:
+# - tests need pytest < 8
+DEB_BUILD_OPTIONS +=  nocheck nodoc
 
 export PYDEVD_DISABLE_FILE_VALIDATION=1
-export XDG_CACHE_HOME=$(CURDIR)/cache
 
 # Needed for pooch temp data directory
 export env=/tmp/pooch
 
 %:
-	dh $@  --buildsystem=pybuild
+	dh $@  --buildsystem=pybuild --with python3
 
 override_dh_auto_clean:
 	dh_auto_clean
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
-	# $(MAKE) -C doc clean
+	$(MAKE) -C doc clean
 endif
 
 override_dh_auto_install: $(PYTHON3:%=install-python%)
 	dh_auto_install
 	find debian/python3-xarray -name '*.idx' -exec chmod -x {} \;
+	find debian -name  test.nc -delete 
 
 override_dh_auto_build:
 	http_proxy=127.0.0.1:9 https_proxy=127.0.0.1:9 dh_auto_build
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+	# PYTHONPATH=$(CURDIR) $(MAKE) -C doc html
+	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -bhtml doc doc/_build/html
+endif
 
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-	for p in $(PY3VERS); do \
-		PY3VERNUM=`echo $$p | sed -e 's/python//' `; \
-		pybuild --test --test-pytest -i $$p -p $$PY3VERNUM  ;  \
-		done
+	#for p in $(PY3VERS); do \
+	#	PY3VERNUM=`echo $$p | sed -e 's/python//' `; \
+	#	pybuild --test --test-pytest -i $$p -p $$PY3VERNUM  ;  \
+	#	done
+	# Tests fail for 3.11, but we ship 3.12 in trixie
+	python3.12 -m pytest .
+	## cleanup after tests
+	#find .  -name 'tmp.zarr*' -delete
 endif
 
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))

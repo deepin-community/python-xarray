@@ -1,3 +1,90 @@
+python-xarray (2024.03.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Re-enable docs
+  * Build-dep on new python3-sphinx-copybutton, python3-sphinxext-rediraffe,
+    python3-sphinxext-opengraph, python3-sphinx-design, 
+    python3-sphinx-book-theme 
+  * Drop no-sphinx-* patches
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 31 Mar 2024 08:17:40 +0100
+
+python-xarray (2024.02.0-2) unstable; urgency=medium
+
+  * Also disable autopkgtests until pytest > 8 supported
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 06 Mar 2024 07:59:04 +0000
+
+python-xarray (2024.02.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Stop tests for this release; needs to be updated for pytest >= 8.0
+  * Undo "nocheck"  to reenable testing; only run tests on python3.12
+  * conflict with -datatree until tests pass
+  * Drop ARM-xfail patch as integrated upstream
+  * Drop xfail-pad-constant patch as now passes
+  * Drop xfail-on-random.patch, closed upstream
+  * Add Build-depends on python3-zarr
+  * Build-depend on python3-sphinx-inline-tabs
+  * Build-depend on python3-hypothesis for testing, +docs
+  * disable-netcdf-compressor-tests.patch:
+    Disable testing of functionality not yet present in Debian
+  * disable-stripped-unitwarning-test.patch:
+    Disable units-testing as broken test on python3.12
+  * Update use-packaged-docs.patch
+  * Skip 2 tests requiring download
+  * Drop Build-deps on numba, python3-sparse to aid transition
+  * dask-gradient-tolerance-i386.patch: Fix for tolerance problem
+    comparing arrays on i386 (C-I failure)
+  * xfail-pint-units-on-python3.12.patch: On python3.12, tests fail as
+    extract_units() in test code is buggy with current pint.
+    Mark tests XFAIL
+  * Make cfgrib build-dep arch-dependent; needed for c-i tests as
+    we cfgrib not present on 32-bit archs
+  * Build-conflict with pint < 0.21 as it breaks, failing to handle
+    'subok' passed in dask wrapping
+  * Build-conflict on python3-sparse to signal that it currently causes
+    segfaults (#1055847) - re-add later
+  * Docs disabled as sphinx needs pandoc < 3 right now
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 04 Mar 2024 10:05:17 +0000
+
+python-xarray (2023.12.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 12 Dec 2023 13:16:18 +0000
+
+python-xarray (2023.11.0-2) unstable; urgency=medium
+
+  * Team upload.
+  * Tests: fix another failure on big-endian systems,
+    allow stderr output.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 25 Nov 2023 22:17:40 +0000
+
+python-xarray (2023.11.0-1) unstable; urgency=medium
+
+  [ Andreas Tille ]
+  * Team upload.
+  * New upstream version. Closes: #1050854
+  * Remove trailing whitespace in debian/changelog (routine-update)
+  * Remove trailing whitespace in debian/control (routine-update)
+  * Remove trailing whitespace in debian/rules (routine-update)
+  * Add salsa-ci file (routine-update)
+  * Rules-Requires-Root: no (routine-update)
+  * Use secure URI in Homepage field.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository-Browse.
+  * Re-enable docs which do not segfault but do nothing else.  Upstream might
+    provide docs in future - otherwise the python-xarray-doc package could be
+    dropped completely.
+
+  [ Rebecca N. Palmer ]
+  * Tests: ignore rounding differences on i386.  Closes: #1004869.
+  * Tests: don't fail on big-endian systems.  Closes: #1053700.
+
+ -- Andreas Tille <tille@debian.org>  Wed, 22 Nov 2023 07:37:01 +0100
+
 python-xarray (2023.10.1-1) unstable; urgency=medium
 
   * New upstream release
@@ -113,7 +200,7 @@ python-xarray (2022.09.0-1) unstable; urgency=medium
     - cftime-fix.patch
     - test_indexes-big-endian.patch
     - no-sphinx-panels.patch
-    - sparse.patch 
+    - sparse.patch
   * Now recommend python3-cftime,python3-sparse,python3-rasterio
 
  -- Alastair McKinstry <mckinstry@debian.org>  Mon, 03 Oct 2022 12:24:02 +0100
@@ -237,7 +324,7 @@ python-xarray (0.19.0-3) unstable; urgency=medium
   * Move to debhelper level 13
   * Standards-Version: 4.6.0
   * Fix typo on patch for pytest marking. test_tutorial.py
-  * Mark test test_pad_constant XFAIL on Arm64 as large constants 
+  * Mark test test_pad_constant XFAIL on Arm64 as large constants
     not transformed into NaN. Closes: #983758
   * Mark test_push_dask() XFAIL with bottleneck < 1.3.0.
 
@@ -307,7 +394,7 @@ python-xarray (0.16.0-1) unstable; urgency=medium
 python-xarray (0.15.1-4) unstable; urgency=medium
 
   * silence-warnings.patch: Don't fail tests on warnings, only errors.
-    Closes: #963820  
+    Closes: #963820
   * Drop merged/obsolete patches:
     - 3430.diff
     - 3431.diff
@@ -333,7 +420,7 @@ python-xarray (0.15.1-2) unstable; urgency=medium
 
 python-xarray (0.15.1-1) unstable; urgency=medium
 
-  * New upstream release 
+  * New upstream release
   * Use dh-sequence-* rather than --with *
 
  -- Alastair McKinstry <mckinstry@debian.org>  Fri, 27 Mar 2020 10:56:52 +0000
@@ -342,7 +429,7 @@ python-xarray (0.15.0-3) unstable; urgency=medium
 
   * Drop obsolete patches from d/patches
   * Mark download tests xfail. Closes: #935455
-  * Switch to python3-pip. 
+  * Switch to python3-pip.
   * pip3.patch: use pip3 instead of pip. Closes: #943226
 
  -- Alastair McKinstry <mckinstry@debian.org>  Wed, 11 Mar 2020 10:14:52 +0000
@@ -352,7 +439,7 @@ python-xarray (0.15.0-2) unstable; urgency=medium
   * Build-Depend on python3-h5netcdf , python3-zarr, python3-pandas,
     ipython3, python3-jupyter-console, python3-jupyter-core,
     python3-jupyter-client
-  * Change setup.py to find, include all subpackages. Closes: #950743 
+  * Change setup.py to find, include all subpackages. Closes: #950743
   * Standards-Version: 4.5.0
   * Update no-installer patch to set nbsphinx_allow_errors = True
 
@@ -384,7 +471,7 @@ python-xarray (0.14.1-1) unstable; urgency=medium
 
 python-xarray (0.14.0-2) unstable; urgency=medium
 
-  [ Matthias Klose ] 
+  [ Matthias Klose ]
   * Fix test failures with new cftime 1.0.4, taken from upstream.
   * _get_scheduler() exception if dask.multiprocessing missing, taken
     from upstream.
@@ -431,7 +518,7 @@ python-xarray (0.12.1-2) unstable; urgency=medium
 python-xarray (0.12.1-1) unstable; urgency=medium
 
   * New upstream release
-  * Drop python2 support: code and dependencies (contextlib.suppress, etc) 
+  * Drop python2 support: code and dependencies (contextlib.suppress, etc)
     no longer work on python < 3.5
   * Add sphinx3-build script to allow python3 -based sphinx build. Helper
     script in debian/, path set in d/rules; patch to doc/Makefile
@@ -487,12 +574,12 @@ python-xarray (0.11.0-2) unstable; urgency=medium
 python-xarray (0.11.0-1) unstable; urgency=medium
 
   * New upstream release
-  * Re-enable testing on python3* rather than python3.6 now pandas supports 
+  * Re-enable testing on python3* rather than python3.6 now pandas supports
     python3.7. Closes: #913521
   * Bug with cftime 1.0.2: mark some affected tests XFAIL. Closes: #913524
   * Don't ship executable data (example) files
   * Don't execute tests id 'nocheck' in DEB_BUILD_OPTIONS
-  * Drop deprecated Restrictions: needs-recommends from d/tests/control; 
+  * Drop deprecated Restrictions: needs-recommends from d/tests/control;
     add dependencies instead
 
  -- Alastair McKinstry <mckinstry@debian.org>  Mon, 12 Nov 2018 11:56:23 +0000
