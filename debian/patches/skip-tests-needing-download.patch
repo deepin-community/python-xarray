@@ -1,0 +1,18 @@
+--- a/xarray/tests/test_backends.py
++++ b/xarray/tests/test_backends.py
+@@ -3740,6 +3740,7 @@
+         "https://www.unidata.ucar.edu/software/netcdf/examples/OMI-Aura_L2-example.nc"
+     )
+ 
++    @pytest.mark.skip("Skipping due to download needed")
+     @pytest.mark.filterwarnings("ignore:Duplicate dimension names")
+     def test_get_variable_list(self) -> None:
+         with open_dataset(
+@@ -3749,6 +3750,7 @@
+         ) as actual:
+             assert "Temperature" in list(actual)
+ 
++    @pytest.mark.skip("Skipping due to download needed")
+     @pytest.mark.filterwarnings("ignore:Duplicate dimension names")
+     def test_get_variable_list_empty_driver_kwds(self) -> None:
+         driver_kwds = {

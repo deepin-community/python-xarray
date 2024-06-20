@@ -1,6 +1,5 @@
 Use-packaged-docs.patch
 Use-packaged-MathJax.patch
-ARM_xfail_tests.patch
 disable-iris.patch
 ipython-fix.patch
 no-installer.patch
@@ -8,7 +7,12 @@ xfail-on-download.patch
 pip3.patch
 no-accessors.patch
 requirejs-path.patch
-no-sphinxext.patch
-xfail-pad-constant.patch
-no-sphinx-design.patch
-# xfail-on-random-patch --disabled, upstream bug closed
+# no-sphinxext.patch
+# no-sphinx-design.patch
+1004869-ignore-i386-rounding.patch
+1053700-endianness.patch
+disable-netcdf-compressor-tests.patch
+dask-gradient-tolerance-i386.patch
+xfail-pint-units-on-python3.12.patch
+skip-tests-needing-download.patch
+skip-datatree.patch
