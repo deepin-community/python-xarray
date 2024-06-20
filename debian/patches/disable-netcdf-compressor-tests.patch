@@ -1,0 +1,21 @@
+Description: NetCDF4 in Debian is not yet built with zstd or blosc compressors.
+ Disable testing of these, which fail
+Author: Alastair McKinstry <mckinstry@debian.org>
+Last-Updated: 2024-01-21
+Forwarded: not-needed
+
+--- a/xarray/tests/test_backends.py
++++ b/xarray/tests/test_backends.py
+@@ -1903,12 +1903,6 @@
+             None,
+             "zlib",
+             "szip",
+-            "zstd",
+-            "blosc_lz",
+-            "blosc_lz4",
+-            "blosc_lz4hc",
+-            "blosc_zlib",
+-            "blosc_zstd",
+         ],
+     )
+     @requires_netCDF4_1_6_2_or_above
